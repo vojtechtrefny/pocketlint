@@ -12,72 +12,31 @@ BuildArch: noarch
 %description
 Addon pylint modules and configuration settings for checking the validity of
 Python-based source projects.
+%{?python_provide:%python_provide python-pocketlint}
 
-%package -n python3-pocketlint
-Summary: Support for running pylint against projects (Python 3 version)
-%{?python_provide:%python_provide python3-pocketlint}
-
-BuildRequires: python3-devel
-BuildRequires: python3-pylint
-BuildRequires: python3-six
-
-Requires: python3-polib
-Requires: python3-pylint
-Requires: python3-six
-
-%description -n python3-pocketlint
-Addon pylint modules and configuration settings for checking the validity of
-Python-based source projects.
-
-%package -n python2-pocketlint
-Summary: Support for running pylint against projects (Python 2 version)
-%{?python_provide:%python_provide python2-pocketlint}
-
-BuildRequires: python2-devel
+BuildRequires: python-devel
 BuildRequires: python-six
 BuildRequires: python-futures
-
-%if 0%{?fedora} >= 26
-BuildRequires: python2-pylint
-%else
-BuildRequires: pylint
-%endif
-
+BuildRequires: python-pylint
 Requires: python-polib
 Requires: python-six
 Requires: python-futures
-
-%if 0%{?fedora} >= 26
-Requires: python2-pylint
-%else
+Requires: python-pylint
 Requires: pylint
-%endif
-
-%description -n python2-pocketlint
-Addon pylint modules and configuration settings for checking the validity of
-Python-based source projects.
 
 %prep
 %setup -q -n pocketlint-%{version}
 
 %build
 make PYTHON=%{__python2}
-make PYTHON=%{__python3}
 
 %install
 make DESTDIR=%{buildroot} PYTHON=%{__python2} install
-make DESTDIR=%{buildroot} PYTHON=%{__python3} install
 
 %check
 make PYTHON=%{__python2} check
-make PYTHON=%{__python3} check
 
-%files -n python3-pocketlint
-%license COPYING
-%{python3_sitelib}/pocketlint*egg*
-%{python3_sitelib}/pocketlint/
-
-%files -n python2-pocketlint
+%files
 %license COPYING
 %{python2_sitelib}/pocketlint*egg*
 %{python2_sitelib}/pocketlint/
